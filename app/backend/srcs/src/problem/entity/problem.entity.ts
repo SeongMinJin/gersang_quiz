@@ -19,10 +19,10 @@ export default class Problem {
 	type: MIME;
 
 	@Column({
-		type: "blob",
+		type: "bytea",
 		nullable: true,
 	})
-	buffer: Blob;
+	buffer: Buffer;
 
 	@ManyToOne(() => Quiz, (quiz: Quiz) => quiz.problems)
 	quiz: Quiz;

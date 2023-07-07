@@ -18,10 +18,10 @@ export default class Selection {
 	type: MIME
 
 	@Column({
-		type: "blob",
+		type: "bytea",
 		nullable: true,
 	})
-	buffer: Blob;
+	buffer: Buffer
 
 	@ManyToOne(() => Problem, (problem: Problem) => problem.selections)
 	problem: Problem;
