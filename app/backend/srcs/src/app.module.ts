@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 import { QuizController } from './quiz/quiz.controller';
 import { QuizModule } from './quiz/quiz.module';
+import { ProblemModule } from './problem/problem.module';
+import { SelectionModule } from './selection/selection.module';
 
 @Module({
   imports: [
@@ -18,7 +20,9 @@ import { QuizModule } from './quiz/quiz.module';
       entities: [join(__dirname, "/**/entity/*.{js.ts}")],
       synchronize: true,
     }),
-    QuizModule
+    QuizModule,
+    ProblemModule,
+    SelectionModule,
   ],
   controllers: [QuizController],
   providers: [],
