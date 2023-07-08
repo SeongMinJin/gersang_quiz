@@ -16,6 +16,12 @@ export default class Quiz {
 	})
 	description: string;
 
+	@Column({
+		type: "bytea",
+		nullable: false,
+	})
+	thumbnail: Buffer
+
 	@OneToMany(() => Problem, (problem: Problem) => problem.quiz)
 	problems: Problem[];
 }

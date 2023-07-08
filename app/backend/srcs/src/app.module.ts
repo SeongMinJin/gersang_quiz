@@ -6,7 +6,6 @@ import { QuizController } from './quiz/quiz.controller';
 import { QuizModule } from './quiz/quiz.module';
 import { ProblemModule } from './problem/problem.module';
 import { SelectionModule } from './selection/selection.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -17,8 +16,9 @@ import { SelectionModule } from './selection/selection.module';
       host: process.env.POSTGRES_HOST,
       port: process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT) : 5432,
       username: process.env.POSTGRES_USER,
-      entities: [join(__dirname, "/**/entity/*.{js.ts}")],
+      entities: [join(__dirname, "./**/entity/*.{js, ts}")],
       synchronize: true,
+      autoLoadEntities: true,
     }),
     QuizModule,
     ProblemModule,

@@ -5,7 +5,6 @@ export default function Page({
 		quizId: string
 	}
 }) {
-	console.log(params);
 	return (
 		<div>{params.quizId}</div>
 	);
