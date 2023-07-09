@@ -1,12 +1,14 @@
 'use client'
 
+import Image from "next/image";
 import { ChangeEvent, Dispatch, FormEvent, KeyboardEvent, MouseEvent, SetStateAction, useEffect, useState } from "react"
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 interface Quiz {
 	id: number,
 	title: string,
-	thumbnail: string,
+	description: string,
+	thumbnail: Buffer,
 }
 
 export default function Admin() {
@@ -27,16 +29,30 @@ export default function Admin() {
 
 	return (
 		<main className="relative flex justify-center w-full h-screen">
-			<div className="relative w-full grid min-w-[300px] gap-4 py-10 px-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:w-[1536px]">
-				<div className="relative w-full h-full">
+			<div className="relative w-full min-w-[300px] py-10 px-5 flex justify-center">
+				<div className="relative w-full h-fit grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:w-[1536px]">
 					{
-						quiz.map((quiz: Quiz) =>
-							<div className="w-full rounded-sm shadow-2xl h-96">
+						quiz.map((quiz: Quiz) =>{
+							console.log(new Blob([quiz.thumbnail]));
+							return (
+								<div key={quiz.id} className="w-full rounded-sm shadow-2xl h-96">
+									<Image
+										src={`/quiz/thumbnail/${quiz.id}`}
+										alt="Thumbnail of Quiz"
+										width={300}
+										height={400}
+										style={{
+											aspectRatio: "3/4",
+											objectFit: "cover"
 
-							</div>
+										}}
+									/>
+								</div>
+							)
+						}
 						)
 					}
-					<div onClick={() => setOpen(true)} className="relative flex items-center justify-center w-full transition-all duration-300 rounded-sm shadow-2xl h-96 hover:-translate-y-4 hover:bg-[#cfcfcf] cursor-pointer">
+					<div onClick={() => setOpen(true)} className="relative flex items-center justify-center w-full transition-all duration-300 rounded-sm shadow-2xl h-96 hover:-translate-y-2 hover:bg-[#cfcfcf] cursor-pointer">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-20 h-20 text-blue-500">
 							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
 						</svg>
@@ -44,7 +60,7 @@ export default function Admin() {
 				</div>
 			</div>
 			{
-				open ? <CreateQuizModal setOpen={setOpen} /> : null
+				open ? <CreateQuizModal setQuiz={setQuiz} setOpen={setOpen} /> : null
 			}
 			<ToastContainer
 				position="top-right"
@@ -64,16 +80,21 @@ export default function Admin() {
 
 
 function CreateQuizModal({
-	setOpen
+	setOpen,
+	setQuiz
 }: {
 	setOpen: Dispatch<SetStateAction<boolean>>
+	setQuiz: Dispatch<SetStateAction<Quiz[]>>
 }) {
 	const [thumbnail, setThumbnail] = useState<string>("");
 	const [title, setTitle] = useState<string>("");
+	const [description, setDescription] = useState<string>("");
 
 	return (
 		<div className="fixed z-[1] bg-opacity-50 bg-[#b9b9b9] w-full h-full flex justify-center items-center">
 			<form onKeyDown={(e: KeyboardEvent) => e.key === "Enter" ? e.preventDefault() : null} onSubmit={async (e: FormEvent) => {
+
+
 				e.preventDefault();
 
 				if (thumbnail === "") {
@@ -87,23 +108,39 @@ function CreateQuizModal({
 					return;
 				}
 
+				if (description === "") {
+					ToastWraper("warn", "설명을 입력해주세요.");
+					document.getElementById("description")?.focus();
+					return;
+				}
+
 
 				const newForm = new FormData();
-				newForm.append("thumbnail", new Blob([thumbnail], {type: "image/*"}));
+				newForm.append("thumbnail", new Blob([await fetch(thumbnail).then(res => res.blob())], {type: "image/*"}));
 				newForm.append("title", title);
+				newForm.append("description", description);
 
 				try {
 					const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/quiz/create`, {
 						method: "post",
 						body: newForm,
 					}).then(res => res.json());
+
+					if (res.success) {
+						ToastWraper("success", "새로운 퀴즈가 만들어졌습니다.");
+						setQuiz(res.data);
+					} else {
+						ToastWraper("error", res.message);
+					}
+
 				} catch {
-					
+					ToastWraper("error", "서버가 아파요 :(");
 				}
 				
 				URL.revokeObjectURL(thumbnail);
 				setThumbnail("");
 				setTitle("");
+				setDescription("");
 				setOpen(false);
 			}} className="relative w-[400px] h-[500px] bg-white shadow-2xl rounded-sm flex flex-col p-4 gap-y-2">
 				<div style={{
@@ -126,6 +163,9 @@ function CreateQuizModal({
 
 				<div className="w-full mt-4 relatvie">
 					<input id="title" value={title} onChange={(e: ChangeEvent) => setTitle((e.target as HTMLInputElement).value)} name="title" type="text" placeholder="퀴즈 제목" className="w-full transition-colors duration-300 border-b-2 focus:border-blue-500 focus:outline-none" />
+				</div>
+				<div className="relative w-full mt-4">
+					<textarea id="description" value={description} onChange={(e: ChangeEvent) => setDescription((e.target as HTMLInputElement).value)} className="w-full transition-colors duration-300 border-2 rounded-sm resize-none focus:outline-none focus:border-blue-500" placeholder="퀴즈 설명" name="description" rows={2}></textarea>
 				</div>
 				<div className="flex justify-between w-full h-[100px] items-end">
 					<button onClick={(e: MouseEvent) => { e.preventDefault(); setOpen(false); }} className="px-4 py-1 text-white bg-[#ea3a3a] duration-200 rounded-sm font-noto-sans-kr hover:bg-[#aa2626]">닫기</button>
