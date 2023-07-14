@@ -1,6 +1,7 @@
 'use client'
 
 import Image from "next/image";
+import Link from "next/link";
 import { ChangeEvent, Dispatch, FormEvent, KeyboardEvent, MouseEvent, SetStateAction, useEffect, useState } from "react"
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,7 +9,10 @@ interface Quiz {
 	id: number,
 	title: string,
 	description: string,
-	thumbnail: Buffer,
+	thumbnail: {
+		type: string,
+		data: Buffer,
+	},
 }
 
 export default function Admin() {
@@ -30,23 +34,26 @@ export default function Admin() {
 	return (
 		<main className="relative flex justify-center w-full h-screen">
 			<div className="relative w-full min-w-[300px] py-10 px-5 flex justify-center">
-				<div className="relative w-full h-fit grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:w-[1536px]">
+				<div className="relative w-full h-fit grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:w-[1536px] font-noto-sans-kr">
 					{
-						quiz.map((quiz: Quiz) =>{
-							console.log(new Blob([quiz.thumbnail]));
+						quiz.map((quiz: Quiz) => {
+							const newURL = URL.createObjectURL(new Blob([new Uint8Array(quiz.thumbnail.data)], {type: "image/*"}));
 							return (
-								<div key={quiz.id} className="w-full rounded-sm shadow-2xl h-96">
+								<div key={quiz.id} className="flex flex-col w-full rounded-sm shadow-2xl h-96">
 									<Image
-										src={`/quiz/thumbnail/${quiz.id}`}
+										src={`${newURL}`}
 										alt="Thumbnail of Quiz"
-										width={300}
-										height={400}
+										width={1}
+										height={1}
 										style={{
-											aspectRatio: "3/4",
-											objectFit: "cover"
-
+											aspectRatio: "4/3",
+											objectFit: "cover",
 										}}
+										className="w-full border-"
 									/>
+									<div className="relative flex w-full h-full">
+										<Link href={`/admin/${quiz.id}`} className="absolute px-4 py-2 duration-300 border-2 border-blue-500 rounded-md hover:bg-blue-500 hover:text-white font-noto-sans-kr right-5 bottom-5">문제만들기</Link>
+									</div>
 								</div>
 							)
 						}
@@ -116,7 +123,7 @@ function CreateQuizModal({
 
 
 				const newForm = new FormData();
-				newForm.append("thumbnail", new Blob([await fetch(thumbnail).then(res => res.blob())], {type: "image/*"}));
+				newForm.append("thumbnail", new Blob([await fetch(thumbnail).then(res => res.blob())], { type: "image/*" }));
 				newForm.append("title", title);
 				newForm.append("description", description);
 
@@ -136,7 +143,7 @@ function CreateQuizModal({
 				} catch {
 					ToastWraper("error", "서버가 아파요 :(");
 				}
-				
+
 				URL.revokeObjectURL(thumbnail);
 				setThumbnail("");
 				setTitle("");

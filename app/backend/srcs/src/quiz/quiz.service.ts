@@ -14,7 +14,8 @@ export class QuizService {
 	){}
 
 	async findAll() {
-		return await this.quizRepository.find();
+		const quizs = await this.quizRepository.find();
+		return quizs;
 	}
 
 	async findOneByTitle(title: string) {
@@ -53,6 +54,8 @@ export class QuizService {
 		});
 
 		await this.quizRepository.save(newQuiz);
+
+		
 
 		return {
 			success: true,
