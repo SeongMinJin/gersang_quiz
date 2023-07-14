@@ -6,13 +6,13 @@ import { ChangeEvent, Dispatch, FormEvent, KeyboardEvent, MouseEvent, SetStateAc
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 interface Quiz {
-	id: number,
-	title: string,
-	description: string,
+	id: number;
+	title: string;
+	description: string;
 	thumbnail: {
-		type: string,
-		data: Buffer,
-	},
+		type: string;
+		data: Buffer;
+	};
 }
 
 export default function Admin() {
