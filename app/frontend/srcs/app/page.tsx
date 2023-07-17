@@ -62,11 +62,9 @@ export default function Home() {
           {
             start ?
               quizJson.quizs[stage].type === Type.AUDIO ?
-
                 <AudioQuiz quiz={quizJson.quizs[stage]} stage={stage} setStage={setStage} score={score} setScore={setScore} status={status} setStatus={setStatus} setStart={setStart} setEnd={setEnd} />
                 :
                 <ImageQuiz quiz={quizJson.quizs[stage]} stage={stage} setStage={setStage} score={score} setScore={setScore} status={status} setStatus={setStatus} setStart={setStart} setEnd={setEnd} />
-
               :
               end ?
                 <Result score={score} />
@@ -164,14 +162,16 @@ function AudioQuiz({
                 }
 
                 setTimeout(() => {
-                  if (stage === 39) {
+                  if (stage === 2) {
                     try {
                       fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistics`, {
                         method: "post",
                         headers: {
                           "Content-Type": "application/json"
                         },
-                        body: JSON.stringify(status),
+                        body: JSON.stringify({
+                          data: status
+                        }),
                       })
                     } catch (err) {
                       console.error(err);
@@ -188,6 +188,11 @@ function AudioQuiz({
           ))
         }
       </fieldset>
+      <div className="absolute bottom-5 right-5">
+        <h4 className="text-2xl">
+          {stage + 1} / 40
+        </h4>
+      </div>
     </div>
   )
 }
@@ -259,14 +264,16 @@ function ImageQuiz({
                 }
 
                 setTimeout(() => {
-                  if (stage === 39) {
+                  if (stage === 2) {
                     try {
                       fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistic`, {
                         method: "post",
                         headers: {
                           "Content-Type": "application/json"
                         },
-                        body: JSON.stringify(status),
+                        body: JSON.stringify({
+                          data: status
+                        }),
                       })
                     } catch (err) {
                       console.error(err);
@@ -283,6 +290,11 @@ function ImageQuiz({
           ))
         }
       </fieldset>
+      <div className="absolute bottom-5 right-5">
+        <h4 className="text-2xl">
+          {stage + 1} / 40
+        </h4>
+      </div>
     </div>
   )
 }

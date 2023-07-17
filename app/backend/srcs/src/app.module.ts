@@ -6,7 +6,7 @@ import { QuizController } from './quiz/quiz.controller';
 import { QuizModule } from './quiz/quiz.module';
 import { ProblemModule } from './problem/problem.module';
 import { SelectionModule } from './selection/selection.module';
-import { StasticsModule } from './stastics/stastics.module';
+import { StatisticsModule } from './statistics/statistics.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -24,7 +24,7 @@ import { StasticsModule } from './stastics/stastics.module';
     QuizModule,
     ProblemModule,
     SelectionModule,
-    StasticsModule,
+    StatisticsModule,
   ],
   controllers: [QuizController],
   providers: [],
