@@ -14,6 +14,11 @@ interface Quiz {
   selection: string[];
 }
 
+interface Status {
+  quiz: Quiz;
+  correct: boolean;
+}
+
 
 export default function Home() {
 
@@ -23,6 +28,7 @@ export default function Home() {
   const quizJson = require('../quiz.json');
   const [score, setScore] = useState<number>(0);
   const [bgmPlay, setBgmPlay] = useState<boolean>(false);
+  const [status, setStatus] = useState<Status[]>([]);
 
   return (
     <main className="relative w-full h-screen">
@@ -57,9 +63,9 @@ export default function Home() {
             start ?
               quizJson.quizs[stage].type === Type.AUDIO ?
 
-                <AudioQuiz quiz={quizJson.quizs[stage]} stage={stage} setStage={setStage} score={score} setScore={setScore} setStart={setStart} setEnd={setEnd} />
+                <AudioQuiz quiz={quizJson.quizs[stage]} stage={stage} setStage={setStage} score={score} setScore={setScore} status={status} setStatus={setStatus} setStart={setStart} setEnd={setEnd} />
                 :
-                <ImageQuiz quiz={quizJson.quizs[stage]} stage={stage} setStage={setStage} score={score} setScore={setScore} setStart={setStart} setEnd={setEnd} />
+                <ImageQuiz quiz={quizJson.quizs[stage]} stage={stage} setStage={setStage} score={score} setScore={setScore} status={status} setStatus={setStatus} setStart={setStart} setEnd={setEnd} />
 
               :
               end ?
@@ -87,6 +93,8 @@ function AudioQuiz({
   setStage,
   score,
   setScore,
+  status,
+  setStatus,
   setStart,
   setEnd
 }: {
@@ -95,6 +103,8 @@ function AudioQuiz({
   setStage: Dispatch<SetStateAction<number>>,
   score: number,
   setScore: Dispatch<SetStateAction<number>>,
+  status: Status[],
+  setStatus: Dispatch<SetStateAction<Status[]>>,
   setStart: Dispatch<SetStateAction<boolean>>,
   setEnd: Dispatch<SetStateAction<boolean>>
 }) {
@@ -137,15 +147,35 @@ function AudioQuiz({
                 if (value === answer) {
                   valueElem?.classList.remove("border-white");
                   valueElem?.classList.add("border-green-500");
+                  setStatus([...status, {
+                    quiz: quiz,
+                    correct: true,
+                  }])
                   setScore(score + 1);
                 } else {
                   valueElem?.classList.remove("border-white");
                   valueElem?.classList.add("border-red-500");
                   answerElem?.classList.remove("border-white");
                   answerElem?.classList.add("border-blue-500");
+                  setStatus([...status, {
+                    quiz: quiz,
+                    correct: false,
+                  }])
                 }
+
                 setTimeout(() => {
                   if (stage === 39) {
+                    try {
+                      fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistics`, {
+                        method: "post",
+                        headers: {
+                          "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(status),
+                      })
+                    } catch (err) {
+                      console.error(err);
+                    }
                     setStart(false);
                     setEnd(true);
                   } else {
@@ -153,7 +183,6 @@ function AudioQuiz({
                     setDone(false);
                   }
                 }, 1000);
-                setTimeout(() => setStage(stage + 1), 1000);
               }} className="hidden" value={selection} id={`${index + 1}번`} type="radio" name={`${stage + 1}`} />
             </div>
           ))
@@ -169,6 +198,8 @@ function ImageQuiz({
   setStage,
   score,
   setScore,
+  status,
+  setStatus,
   setStart,
   setEnd
 }: {
@@ -177,6 +208,8 @@ function ImageQuiz({
   setStage: Dispatch<SetStateAction<number>>,
   score: number,
   setScore: Dispatch<SetStateAction<number>>,
+  status: Status[],
+  setStatus: Dispatch<SetStateAction<Status[]>>,
   setStart: Dispatch<SetStateAction<boolean>>,
   setEnd: Dispatch<SetStateAction<boolean>>
 }) {
@@ -211,18 +244,33 @@ function ImageQuiz({
                 const answerElem = document.getElementById(answer);
                 if (value === answer) {
                   valueElem?.classList.add("text-green-500", "font-bold");
+                  setStatus([...status, {
+                    quiz: quiz,
+                    correct: true,
+                  }])
                   setScore(score + 1);
                 } else {
                   valueElem?.classList.add("text-red-500", "font-bold");
                   answerElem?.classList.add("text-blue-500", "font-bold");
+                  setStatus([...status, {
+                    quiz: quiz,
+                    correct: false,
+                  }])
                 }
-                if (stage === 39) {
-                  setStart(false);
-                  setEnd(true);
-                  return;
-                }
+
                 setTimeout(() => {
-                  if (stage === 1) {
+                  if (stage === 39) {
+                    try {
+                      fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistic`, {
+                        method: "post",
+                        headers: {
+                          "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(status),
+                      })
+                    } catch (err) {
+                      console.error(err);
+                    }
                     setStart(false);
                     setEnd(true);
                   } else {

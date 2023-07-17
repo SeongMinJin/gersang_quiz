@@ -2,8 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '거상 퀴즈',
-  description: '거상 소리 듣고 문제 맞히기 사이트',
+  title: '거상 고인물 테스트',
+  description: '거상 고인물 테스트',
 }
 
 export default function RootLayout({
