@@ -25,7 +25,7 @@ export default function Admin() {
 				const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/quiz`).then(res => res.json());
 				setQuiz(res);
 			} catch (err) {
-				ToastWraper("error", "서버가 아파요 :(");
+				// ToastWraper("error", "서버가 아파요 :(");
 			}
 		}
 		initQuiz();
@@ -183,7 +183,7 @@ function CreateQuizModal({
 	)
 }
 
-export function ToastWraper(type: string, message: string) {
+// export function ToastWraper(type: string, message: string) {
 	// switch (type) {
 	// 	case "error":
 	// 		return toast.error(message, {
@@ -221,4 +221,4 @@ export function ToastWraper(type: string, message: string) {
 	// 	default:
 	// 		return;
 	// }
-}
+// }
