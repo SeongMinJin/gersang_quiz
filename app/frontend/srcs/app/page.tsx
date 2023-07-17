@@ -162,7 +162,7 @@ function AudioQuiz({
                 }
 
                 setTimeout(() => {
-                  if (stage === 2) {
+                  if (stage === 39) {
                     try {
                       fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistics`, {
                         method: "post",
@@ -264,7 +264,7 @@ function ImageQuiz({
                 }
 
                 setTimeout(() => {
-                  if (stage === 2) {
+                  if (stage === 39) {
                     try {
                       fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistic`, {
                         method: "post",
