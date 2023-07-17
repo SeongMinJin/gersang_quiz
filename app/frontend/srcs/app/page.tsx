@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import { ChangeEvent, Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
 
 enum Type {
   AUDIO = "AUDIO",
@@ -244,11 +244,24 @@ function Result({
 }: {
   score: number
 }) {
+  let comment: string;
+
+  if (score < 10)
+    comment = "가서 사슴이나 더 잡고 오슈";
+  else if (score < 20)
+    comment = "2차 장수정도는 가질 자격이 되겠구먼";
+  else if (score < 30)
+    comment = "기린 정도는 뽑아도 되겠구만?"
+  else
+    comment = "많이 맞혔다고 좋은건 아닐텐데..."
+
   return (
-    <div className="relative w-full h-full p-4">
+    <div className="relative flex flex-col items-center w-full h-full p-4">
 
-      <h2 className="text-3xl text-center">맞힌 문제 : {score} / 40</h2>
+      <h2 className="mb-10 text-3xl text-center">맞힌 문제 : {score} / 40</h2>
+      <p className="mb-5 text-lg text-center">{comment}</p>
 
+      <a className="px-4 py-2 border-2 border-blue-500 hover:bg-blue-500 hover:text-white" href="/">다시풀기</a>
     </div>
   )
 }
