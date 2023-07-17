@@ -32,7 +32,7 @@
 		},
 		{
 			"type": "IMAGE",
-			"asnwer": "검성 보쿠텐",
+			"answer": "검성 보쿠텐",
 			"selection": [
 				"검신 보쿠텐",
 				"검성 바쿠텐",
@@ -134,14 +134,14 @@
 			"type": "AUDIO",
 			"answer": "다문천왕",
 			"selection": [
-				"다문천황",
+				"다문천왕",
 				"무희 초선",
 				"이명화",
 				"해신 마조"
 			]
 		},
 		{
-			"type": "AUDIO",
+			"type": "IMAGE",
 			"answer": "송어인",
 			"selection": [
 				"송가인",
