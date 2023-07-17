@@ -69,7 +69,7 @@ export default function Home() {
                   <h1 className="py-2 text-2xl font-bold text-center text-white bg-blue-500 ">거상 고인물 테스트</h1>
                   <div className="relative flex items-center justify-center w-full py-20">
                     <button onClick={() => setStart(!start)} className="px-10 py-4 font-semibold transition-colors duration-200 bg-white rounded-sm hover:text-white hover:bg-blue-500">
-                      시작하기ㅁㄴㅇㅁㄴㅇㅁㄴㅇ
+                      시작하기
                     </button>
                   </div>
                 </>
