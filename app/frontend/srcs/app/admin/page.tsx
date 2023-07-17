@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChangeEvent, Dispatch, FormEvent, KeyboardEvent, MouseEvent, SetStateAction, useEffect, useState } from "react"
-import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+// import { toast, ToastContainer } from "react-toastify";
+// import 'react-toastify/dist/ReactToastify.css';
 interface Quiz {
 	id: number;
 	title: string;
@@ -69,7 +69,7 @@ export default function Admin() {
 			{
 				open ? <CreateQuizModal setQuiz={setQuiz} setOpen={setOpen} /> : null
 			}
-			<ToastContainer
+			{/* <ToastContainer
 				position="top-right"
 				autoClose={3000}
 				hideProgressBar={false}
@@ -80,7 +80,7 @@ export default function Admin() {
 				draggable
 				pauseOnHover
 				theme="colored"
-			/>
+			/> */}
 		</main>
 	)
 }
@@ -99,7 +99,7 @@ function CreateQuizModal({
 
 	return (
 		<div className="fixed z-[1] bg-opacity-50 bg-[#b9b9b9] w-full h-full flex justify-center items-center">
-			<form onKeyDown={(e: KeyboardEvent) => e.key === "Enter" ? e.preventDefault() : null} onSubmit={async (e: FormEvent) => {
+			{/* <form onKeyDown={(e: KeyboardEvent) => e.key === "Enter" ? e.preventDefault() : null} onSubmit={async (e: FormEvent) => {
 
 
 				e.preventDefault();
@@ -178,47 +178,47 @@ function CreateQuizModal({
 					<button onClick={(e: MouseEvent) => { e.preventDefault(); setOpen(false); }} className="px-4 py-1 text-white bg-[#ea3a3a] duration-200 rounded-sm font-noto-sans-kr hover:bg-[#aa2626]">닫기</button>
 					<button className="px-4 py-1 text-white bg-[#334ed6] duration-200 rounded-sm font-noto-sans-kr hover:bg-[#1a2c87]">확인</button>
 				</div>
-			</form>
+			</form> */}
 		</div>
 	)
 }
 
 export function ToastWraper(type: string, message: string) {
-	switch (type) {
-		case "error":
-			return toast.error(message, {
-				position: "top-right",
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			})
-		case "warn":
-			return toast.warn(message, {
-				position: "top-right",
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			})
-		case "success":
-			return toast.success(message, {
-				position: "top-right",
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			})
-		default:
-			return;
-	}
+	// switch (type) {
+	// 	case "error":
+	// 		return toast.error(message, {
+	// 			position: "top-right",
+	// 			autoClose: 3000,
+	// 			hideProgressBar: false,
+	// 			closeOnClick: true,
+	// 			pauseOnHover: true,
+	// 			draggable: true,
+	// 			progress: undefined,
+	// 			theme: "colored",
+	// 		})
+	// 	case "warn":
+	// 		return toast.warn(message, {
+	// 			position: "top-right",
+	// 			autoClose: 3000,
+	// 			hideProgressBar: false,
+	// 			closeOnClick: true,
+	// 			pauseOnHover: true,
+	// 			draggable: true,
+	// 			progress: undefined,
+	// 			theme: "colored",
+	// 		})
+	// 	case "success":
+	// 		return toast.success(message, {
+	// 			position: "top-right",
+	// 			autoClose: 3000,
+	// 			hideProgressBar: false,
+	// 			closeOnClick: true,
+	// 			pauseOnHover: true,
+	// 			draggable: true,
+	// 			progress: undefined,
+	// 			theme: "colored",
+	// 		})
+	// 	default:
+	// 		return;
+	// }
 }
