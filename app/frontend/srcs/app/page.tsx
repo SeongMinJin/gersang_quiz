@@ -162,7 +162,7 @@ function AudioQuiz({
                 }
 
                 setTimeout(() => {
-                  if (stage === 39) {
+                  if (stage === 2) {
                     try {
                       fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistics`, {
                         method: "post",
@@ -222,7 +222,7 @@ function ImageQuiz({
   const [done, setDone] = useState<boolean>(false);
   return (
     <div className="relative flex flex-col w-full h-full p-10 gap-y-4">
-      <h3 className="text-xl">{stage + 1}. 옳바른 이름을 고르시오. </h3>
+      <h3 className="text-xl">{stage + 1}. 올바른 이름을 고르시오. </h3>
 
       <div className="">
         <Image
@@ -264,7 +264,7 @@ function ImageQuiz({
                 }
 
                 setTimeout(() => {
-                  if (stage === 39) {
+                  if (stage === 2) {
                     try {
                       fetch(`${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/statistic`, {
                         method: "post",
